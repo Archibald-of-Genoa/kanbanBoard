@@ -1,28 +1,34 @@
 import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-}
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+  }
 
-ul, ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+  ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  button {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+  }
 `;
 
 export const Wrapper = styled.div`
@@ -52,7 +58,6 @@ export const H2 = styled.h2`
     font-style: normal;
     font-weight: 400;
     font-size: 1.75rem;
-    color: white;
     @media (max-width: 375px) {
         display: none;
     }
@@ -64,8 +69,6 @@ export const LoginContainer = styled.div`
     align-items: center;
     gap: 6px;
     cursor: pointer;
-    
-
 `;
 
 export const LoginButton = styled.button`
@@ -78,4 +81,18 @@ export const LoginButton = styled.button`
     height: 2.5rem;
     border: none;
     cursor: pointer;
+`;
+
+export const Button = styled.button`
+    color: #5e6c84;
+    border: none;
+    padding: 0;
+`;
+
+export const ButtonContainer = styled.div`
+    cursor: pointer;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 3px
 `;

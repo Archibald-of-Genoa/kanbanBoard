@@ -1,28 +1,30 @@
 import { useState } from "react";
 import type { Column as ColumnType, Task } from "../../types";
 import { Arrow } from "../Arrow/Arrow";
+import { Column } from "../Column";
 import {
+    Button,
+    ButtonContainer,
     H2,
     Header,
     LoginButton,
     LoginContainer,
     Wrapper,
 } from "./Board.styled";
-import { S } from "../Column/Column.styled";
-import { Column } from "../Column";
+import { Cross, S } from "../Column/Column.styled";
 
 const INITIAL_TASKS: Task[] = [
     {
         id: "1",
-        title: "Important task",
+        title: "Important task laskfj lsadkfjsld skjfdh ksdfhj ",
         description: "Description for Important task",
-        status: "TODO",
+        status: "BACKLOG",
     },
     {
         id: "2",
         title: "Very important task",
         description: "Description for very important task",
-        status: "TODO",
+        status: "BACKLOG",
     },
     {
         id: "3 ",
@@ -48,6 +50,7 @@ export function Board() {
         setIsOpen(!isOpen);
         setIsActive(!isActive);
     };
+
     return (
         <Wrapper>
             <Header>
@@ -60,13 +63,24 @@ export function Board() {
                     <Arrow $isOpen={isOpen} />
                 </LoginContainer>
             </Header>
-            <S.ColumnContainer>
+            <S.ColumnsContainer>
                 {COLUMNS.map((column) => {
                     return (
-                        <Column key={column.id} column={column} tasks={tasks.filter(task => task.status === column.id)} />
+                        <Column
+                            key={column.id}
+                            column={column}
+                            tasks={tasks.filter(
+                                (task) => task.status === column.id
+                            )}
+                        >
+                            <ButtonContainer>
+                                <Cross/>
+                                <Button>Add item</Button>
+                            </ButtonContainer>
+                        </Column>
                     );
                 })}
-            </S.ColumnContainer>
+            </S.ColumnsContainer>
         </Wrapper>
     );
 }

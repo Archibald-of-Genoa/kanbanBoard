@@ -1,7 +1,7 @@
-import type { ArrowProps } from "../../types";
+import type { ButtonProps } from "../../types";
 import { ArrowStyled } from "./Arrow.styled";
 
-export function Arrow({ $isOpen = false, onClick }: ArrowProps) {
+export function Arrow({ $isOpen = false, onClick }: ButtonProps) {
     return (
         <ArrowStyled
             $isOpen={$isOpen}

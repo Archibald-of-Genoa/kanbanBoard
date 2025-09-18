@@ -10,8 +10,7 @@ export type Task = {
     status: string;
 };
 
-export type ArrowProps = {
+export type ButtonProps = {
     $isOpen?: boolean;
     onClick?: () => void;
 };
-
