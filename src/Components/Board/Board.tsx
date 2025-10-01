@@ -12,6 +12,7 @@ import {
     Wrapper,
 } from "./Board.styled";
 import { Cross, S } from "../Column/Column.styled";
+import { TaskInputForm } from "../TaskInputForm";
 
 const INITIAL_TASKS: Task[] = [
     {
@@ -45,10 +46,39 @@ export function Board() {
     const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isActive, setIsActive] = useState<boolean>(false);
+    const [showInputForm, setShowInputForm] = useState<string | undefined>(
+        undefined
+    );
+    const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
 
     const handleArrowClick = () => {
         setIsOpen(!isOpen);
         setIsActive(!isActive);
+    };
+
+    const handleTaskSubmit = (columnId: string, title: string) => {
+        if (title.trim()) {
+            const newTask = {
+                id: Math.random().toString(36),
+                title: title.trim(),
+                description: "New task description",
+                status: columnId,
+            };
+            setTasks((prevTasks) => [...prevTasks, newTask]);
+        }
+        setShowInputForm(undefined);
+        setCurrentTaskTitle("");
+    };
+
+    const addTask = (columnId: string) => {
+        if (columnId === "BACKLOG") {
+            setShowInputForm(columnId);
+        }
+    };
+
+    const handleTaskCancel = () => {
+        setShowInputForm(undefined);
+        setCurrentTaskTitle("");
     };
 
     return (
@@ -73,9 +103,33 @@ export function Board() {
                                 (task) => task.status === column.id
                             )}
                         >
-                            <ButtonContainer>
-                                <Cross/>
-                                <Button>Add item</Button>
+                            {showInputForm === column.id && (
+                                <TaskInputForm
+                                    onSubmit={(title) =>
+                                        handleTaskSubmit(column.id, title)
+                                    }
+                                    onCancel={handleTaskCancel}
+                                    onChange={setCurrentTaskTitle}
+                                />
+                            )}
+                            <ButtonContainer
+                                onClick={() => {
+                                    if (showInputForm === column.id) {
+                                        handleTaskSubmit(
+                                            column.id,
+                                            currentTaskTitle
+                                        );
+                                    } else {
+                                        addTask(column.id);
+                                    }
+                                }}
+                            >
+                                <Cross />
+                                <Button>
+                                    {showInputForm === column.id
+                                        ? "Submit"
+                                        : "Add item"}
+                                </Button>
                             </ButtonContainer>
                         </Column>
                     );

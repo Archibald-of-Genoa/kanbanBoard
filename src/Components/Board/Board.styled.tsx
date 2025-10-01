@@ -84,6 +84,7 @@ export const LoginButton = styled.button`
 `;
 
 export const Button = styled.button`
+
     color: #5e6c84;
     border: none;
     padding: 0;
