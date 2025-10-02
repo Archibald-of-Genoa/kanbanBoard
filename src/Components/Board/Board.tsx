@@ -2,17 +2,16 @@ import { useState } from "react";
 import type { Column as ColumnType, Task } from "../../types";
 import { Arrow } from "../Arrow/Arrow";
 import { Column } from "../Column";
+import { Cross, S } from "../Column/Column.styled";
+import { TaskInputForm } from "../TaskInputForm";
 import {
     Button,
-    ButtonContainer,
     H2,
     Header,
     LoginButton,
     LoginContainer,
-    Wrapper,
+    Wrapper
 } from "./Board.styled";
-import { Cross, S } from "../Column/Column.styled";
-import { TaskInputForm } from "../TaskInputForm";
 
 const INITIAL_TASKS: Task[] = [
     {
@@ -112,7 +111,8 @@ export function Board() {
                                     onChange={setCurrentTaskTitle}
                                 />
                             )}
-                            <ButtonContainer
+
+                            <Button $submitted={showInputForm === column.id}
                                 onClick={() => {
                                     if (showInputForm === column.id) {
                                         handleTaskSubmit(
@@ -124,13 +124,12 @@ export function Board() {
                                     }
                                 }}
                             >
-                                <Cross />
-                                <Button>
-                                    {showInputForm === column.id
-                                        ? "Submit"
-                                        : "Add item"}
-                                </Button>
-                            </ButtonContainer>
+                                {showInputForm !== column.id && <Cross />}
+
+                                {showInputForm === column.id
+                                    ? "Submit"
+                                    : "Add card"}
+                            </Button>
                         </Column>
                     );
                 })}

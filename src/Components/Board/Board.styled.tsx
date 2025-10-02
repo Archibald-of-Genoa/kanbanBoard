@@ -83,17 +83,17 @@ export const LoginButton = styled.button`
     cursor: pointer;
 `;
 
-export const Button = styled.button`
-
-    color: #5e6c84;
-    border: none;
-    padding: 0;
-`;
-
-export const ButtonContainer = styled.div`
-    cursor: pointer;
+export const Button = styled.button<{ $submitted: boolean }>`
     display: flex;
-    justify-content: start;
+    justify-content: ${(props) => (props.$submitted ? "center" : "start")};
     align-items: center;
-    gap: 3px
+    gap: 3px;
+    color: ${(props) => (props.$submitted ? "white" : "#5e6c84")};
+    background: ${(props) => (props.$submitted ? "#0079bf" : "none")};
+    border: none;
+    border-radius: 5px;
+    padding: 0;
+    cursor: pointer;
+    width: 6.3rem;
+    height: 1.8rem;
 `;
