@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-const fadeInDown = keyframes`
+export const fadeInDown = keyframes`
     0% {
         opacity: 0;
         transform: translateY(-10px);

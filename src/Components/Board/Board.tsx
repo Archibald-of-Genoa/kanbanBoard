@@ -13,6 +13,7 @@ import {
     Wrapper,
 } from "./Board.styled";
 import { Button } from "../Button";
+import { DropDown } from "../DropDown";
 
 const S = {
     ...ColumnS,
@@ -54,7 +55,11 @@ export function Board() {
     const [showInputForm, setShowInputForm] = useState<string | undefined>(
         undefined
     );
+    const [showDropDown, setShowDropDown] = useState<string | undefined>(
+        undefined
+    );
     const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
+    const [isClicked, setIsClicked] = useState(false)
 
     const handleArrowClick = () => {
         setIsOpen(!isOpen);
@@ -118,9 +123,11 @@ export function Board() {
                                 />
                             )}
 
+                            {showDropDown === column.id && <DropDown />}
+
                             {(() => {
                                 const isBacklog = column.id === "BACKLOG";
-                                const isReady = column.id === "READY";
+                                let isReady = column.id === "READY";
                                 const isBacklogInput =
                                     showInputForm === column.id && isBacklog;
                                 const hasValidTitle = Boolean(
@@ -132,9 +139,11 @@ export function Board() {
                                         $submitted={
                                             hasValidTitle && isBacklogInput
                                         }
-                                        $backlogDisabled={
+                                        $isBacklogDisabled={
                                             isBacklogInput && !hasValidTitle
                                         }
+                                        $isReady={isReady}
+                                        $isClicked={isClicked}
                                     >
                                         <Button
                                             isDisabled={
@@ -150,7 +159,8 @@ export function Board() {
                                                         currentTaskTitle
                                                     );
                                                 } else if (isReady) {
-                                                    console.log("ready");
+                                                    setIsClicked(!isClicked)
+                                                    setShowDropDown(column.id);
                                                 } else {
                                                     addTask(column.id);
                                                 }

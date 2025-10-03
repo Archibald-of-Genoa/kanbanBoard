@@ -2,10 +2,12 @@ import styled from "styled-components";
 
 export const Button = styled.div<{
     $submitted: boolean;
-    $backlogDisabled: boolean;
+    $isBacklogDisabled: boolean;
+    $isReady: boolean;
+    $isClicked: boolean
 }>`
     & button {
-        display: flex;
+        display: ${(props) => (props.$isReady && props.$isClicked ? "none" : "flex")};
         justify-content: center;
         align-items: center;
         gap: 3px;
@@ -14,7 +16,7 @@ export const Button = styled.div<{
         cursor: ${(props) =>
             props.$submitted
                 ? "pointer"
-                : props.$backlogDisabled
+                : props.$isBacklogDisabled
                 ? "not-allowed"
                 : "pointer"};
         width: 6.3rem;
