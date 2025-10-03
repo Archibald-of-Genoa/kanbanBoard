@@ -83,17 +83,25 @@ export const LoginButton = styled.button`
     cursor: pointer;
 `;
 
-export const Button = styled.button<{ $submitted: boolean }>`
+export const Button = styled.button<{
+    $submitted: boolean;
+    $backlogDisabled: boolean;
+}>`
     display: flex;
-    justify-content: ${(props) => (props.$submitted ? "center" : "start")};
+    justify-content: center;
     align-items: center;
     gap: 3px;
     color: ${(props) => (props.$submitted ? "white" : "#5e6c84")};
-    background: ${(props) => (props.$submitted ? "#0079bf" : "none")};
+    background: ${(props) => (props.$submitted ? "#0079bf" : "white")};
     border: none;
     border-radius: 5px;
     padding: 0;
-    cursor: pointer;
+    cursor: ${(props) =>
+        props.$submitted
+            ? "pointer"
+            : props.$backlogDisabled
+            ? "not-allowed"
+            : "pointer"};
     width: 6.3rem;
     height: 1.8rem;
 `;

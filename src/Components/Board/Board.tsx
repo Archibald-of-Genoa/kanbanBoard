@@ -112,24 +112,34 @@ export function Board() {
                                 />
                             )}
 
-                            <Button $submitted={showInputForm === column.id}
-                                onClick={() => {
-                                    if (showInputForm === column.id) {
-                                        handleTaskSubmit(
-                                            column.id,
-                                            currentTaskTitle
-                                        );
-                                    } else {
-                                        addTask(column.id);
-                                    }
-                                }}
-                            >
-                                {showInputForm !== column.id && <Cross />}
+                            {(() => {
+                                const isBacklogInput = showInputForm === column.id && column.id === "BACKLOG";
+                                const hasValidTitle = Boolean(currentTaskTitle.trim());
 
-                                {showInputForm === column.id
-                                    ? "Submit"
-                                    : "Add card"}
-                            </Button>
+                                return (
+                                    <Button
+                                        $submitted={hasValidTitle && isBacklogInput}
+                                        $backlogDisabled={isBacklogInput && !hasValidTitle}
+                                        disabled={isBacklogInput && !hasValidTitle}
+                                        onClick={() => {
+                                            if (showInputForm === column.id) {
+                                                handleTaskSubmit(
+                                                    column.id,
+                                                    currentTaskTitle
+                                                );
+                                            } else {
+                                                addTask(column.id);
+                                            }
+                                        }}
+                                    >
+                                        {showInputForm !== column.id && <Cross />}
+
+                                        {showInputForm === column.id
+                                            ? "Submit"
+                                            : "Add card"}
+                                    </Button>
+                                );
+                            })()}
                         </Column>
                     );
                 })}
