@@ -13,3 +13,9 @@ export const DropDown = styled.div`
     transition: 0.3s ease-in-out;
     animation: ${fadeInDown} 0.4s ease-out;
 `
+
+export const DropDownList = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+`

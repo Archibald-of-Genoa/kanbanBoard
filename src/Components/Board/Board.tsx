@@ -59,7 +59,7 @@ export function Board() {
         undefined
     );
     const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
-    const [isClicked, setIsClicked] = useState(false)
+    const [isClicked, setIsClicked] = useState(false);
 
     const handleArrowClick = () => {
         setIsOpen(!isOpen);
@@ -123,7 +123,9 @@ export function Board() {
                                 />
                             )}
 
-                            {showDropDown === column.id && <DropDown />}
+                            {showDropDown === column.id && (
+                                <DropDown backlogCards={tasks} />
+                            )}
 
                             {(() => {
                                 const isBacklog = column.id === "BACKLOG";
@@ -159,8 +161,9 @@ export function Board() {
                                                         currentTaskTitle
                                                     );
                                                 } else if (isReady) {
-                                                    setIsClicked(!isClicked)
+                                                    setIsClicked(!isClicked);
                                                     setShowDropDown(column.id);
+                                                    console.log(tasks);
                                                 } else {
                                                     addTask(column.id);
                                                 }
