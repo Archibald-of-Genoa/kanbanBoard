@@ -4,12 +4,11 @@ export const Button = styled.div<{
     $submitted: boolean;
     $backlogDisabled: boolean;
 }>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3px;
-
     & button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3px;
         border-radius: 5px;
         padding: 0;
         cursor: ${(props) =>

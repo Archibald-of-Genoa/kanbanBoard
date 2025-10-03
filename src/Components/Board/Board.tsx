@@ -119,9 +119,10 @@ export function Board() {
                             )}
 
                             {(() => {
+                                const isBacklog = column.id === "BACKLOG";
+                                const isReady = column.id === "READY";
                                 const isBacklogInput =
-                                    showInputForm === column.id &&
-                                    column.id === "BACKLOG";
+                                    showInputForm === column.id && isBacklog;
                                 const hasValidTitle = Boolean(
                                     currentTaskTitle.trim()
                                 );
@@ -136,15 +137,20 @@ export function Board() {
                                         }
                                     >
                                         <Button
-                                            isDisabled={isBacklogInput && !hasValidTitle}
+                                            isDisabled={
+                                                isBacklogInput && !hasValidTitle
+                                            }
                                             onClick={() => {
                                                 if (
-                                                    showInputForm === column.id
+                                                    showInputForm &&
+                                                    isBacklog
                                                 ) {
                                                     handleTaskSubmit(
                                                         column.id,
                                                         currentTaskTitle
                                                     );
+                                                } else if (isReady) {
+                                                    console.log("ready");
                                                 } else {
                                                     addTask(column.id);
                                                 }
