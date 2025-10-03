@@ -2,16 +2,22 @@ import { useState } from "react";
 import type { Column as ColumnType, Task } from "../../types";
 import { Arrow } from "../Arrow/Arrow";
 import { Column } from "../Column";
-import { Cross, S } from "../Column/Column.styled";
+import { Cross, S as ColumnS } from "../Column/Column.styled";
 import { TaskInputForm } from "../TaskInputForm";
+import * as ButtonS from "../Button/Button.styled";
 import {
-    Button,
     H2,
     Header,
     LoginButton,
     LoginContainer,
-    Wrapper
+    Wrapper,
 } from "./Board.styled";
+import { Button } from "../Button";
+
+const S = {
+    ...ColumnS,
+    ...ButtonS,
+};
 
 const INITIAL_TASKS: Task[] = [
     {
@@ -113,31 +119,46 @@ export function Board() {
                             )}
 
                             {(() => {
-                                const isBacklogInput = showInputForm === column.id && column.id === "BACKLOG";
-                                const hasValidTitle = Boolean(currentTaskTitle.trim());
+                                const isBacklogInput =
+                                    showInputForm === column.id &&
+                                    column.id === "BACKLOG";
+                                const hasValidTitle = Boolean(
+                                    currentTaskTitle.trim()
+                                );
 
                                 return (
-                                    <Button
-                                        $submitted={hasValidTitle && isBacklogInput}
-                                        $backlogDisabled={isBacklogInput && !hasValidTitle}
-                                        disabled={isBacklogInput && !hasValidTitle}
-                                        onClick={() => {
-                                            if (showInputForm === column.id) {
-                                                handleTaskSubmit(
-                                                    column.id,
-                                                    currentTaskTitle
-                                                );
-                                            } else {
-                                                addTask(column.id);
-                                            }
-                                        }}
+                                    <S.Button
+                                        $submitted={
+                                            hasValidTitle && isBacklogInput
+                                        }
+                                        $backlogDisabled={
+                                            isBacklogInput && !hasValidTitle
+                                        }
                                     >
-                                        {showInputForm !== column.id && <Cross />}
+                                        <Button
+                                            isDisabled={isBacklogInput && !hasValidTitle}
+                                            onClick={() => {
+                                                if (
+                                                    showInputForm === column.id
+                                                ) {
+                                                    handleTaskSubmit(
+                                                        column.id,
+                                                        currentTaskTitle
+                                                    );
+                                                } else {
+                                                    addTask(column.id);
+                                                }
+                                            }}
+                                        >
+                                            {showInputForm !== column.id && (
+                                                <Cross />
+                                            )}
 
-                                        {showInputForm === column.id
-                                            ? "Submit"
-                                            : "Add card"}
-                                    </Button>
+                                            {showInputForm === column.id
+                                                ? "Submit"
+                                                : "Add card"}
+                                        </Button>
+                                    </S.Button>
                                 );
                             })()}
                         </Column>
