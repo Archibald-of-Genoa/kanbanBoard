@@ -39,6 +39,12 @@ const INITIAL_TASKS: Task[] = [
         description: "Description for task in progress",
         status: "IN_PROGRESS",
     },
+    {
+        id: "4",
+        title: "Ready task",
+        description: "Description for the ready task",
+        status: "READY",
+    },
 ];
 
 const COLUMNS: ColumnType[] = [
