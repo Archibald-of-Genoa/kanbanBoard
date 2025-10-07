@@ -57,6 +57,7 @@ const COLUMNS: ColumnType[] = [
 export function Board() {
     const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isDropDownOpen, setIsDropDownOpen] = useState(false);
     const [isActive, setIsActive] = useState<boolean>(false);
     const [showInputForm, setShowInputForm] = useState<string | undefined>(
         undefined
@@ -67,9 +68,13 @@ export function Board() {
     const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
     const [isClicked, setIsClicked] = useState(false);
 
-    const handleArrowClick = () => {
-        setIsOpen(!isOpen);
-        setIsActive(!isActive);
+    const handleLoginClick = () => {
+        setIsOpen((prev) => !prev);
+        setIsActive((prev) => !prev);
+    };
+
+    const handleDropDownToggle = () => {
+        setIsDropDownOpen((prev) => !prev);
     };
 
     const handleTaskSubmit = (columnId: string, title: string) => {
@@ -103,10 +108,10 @@ export function Board() {
                 <H2>Awesome Kanban Board</H2>
                 <LoginContainer
                     className={isOpen ? "active" : ""}
-                    onClick={handleArrowClick}
+                    onClick={handleLoginClick}
                 >
                     <LoginButton />
-                    <Arrow $isOpen={isOpen} />
+                    <Arrow $isOpen={isOpen} fill="white" />
                 </LoginContainer>
             </Header>
             <S.ColumnsContainer>
@@ -130,7 +135,11 @@ export function Board() {
                             )}
 
                             {showDropDown === column.id && (
-                                <DropDown backlogCards={tasks} />
+                                <DropDown
+                                    isOpen={isDropDownOpen}
+                                    onClick={handleDropDownToggle}
+                                    backlogCards={tasks}
+                                />
                             )}
 
                             {(() => {
@@ -169,7 +178,6 @@ export function Board() {
                                                 } else if (isReady) {
                                                     setIsClicked(!isClicked);
                                                     setShowDropDown(column.id);
-                                                    console.log(tasks);
                                                 } else {
                                                     addTask(column.id);
                                                 }

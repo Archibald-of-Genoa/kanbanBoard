@@ -1,7 +1,7 @@
 import type { ButtonProps } from "../../types";
 import { ArrowStyled } from "./Arrow.styled";
 
-export function Arrow({ $isOpen = false, onClick }: ButtonProps) {
+export function Arrow({ $isOpen = false, fill, onClick }: ButtonProps) {
     return (
         <ArrowStyled
             $isOpen={$isOpen}
@@ -15,7 +15,7 @@ export function Arrow({ $isOpen = false, onClick }: ButtonProps) {
             <path
                 d="M1.415 0.209991L6 4.79499L10.585 0.209991L12 1.62499L6 7.62499L0
 1.62499L1.415 0.209991Z"
-                fill="white"
+                fill={fill}
             />
         </ArrowStyled>
     );

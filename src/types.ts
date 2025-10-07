@@ -12,5 +12,6 @@ export type Task = {
 
 export type ButtonProps = {
     $isOpen?: boolean;
+    fill?: string;
     onClick?: () => void;
 };

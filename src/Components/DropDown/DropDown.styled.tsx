@@ -3,7 +3,7 @@ import { fadeInDown } from "../TaskCard/TaskCard.styled";
 
 export const DropDown = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
     padding: 0.4rem;
     background-color: #fff;
@@ -12,10 +12,15 @@ export const DropDown = styled.div`
     border-radius: 5px;
     transition: 0.3s ease-in-out;
     animation: ${fadeInDown} 0.4s ease-out;
-`
+`;
 
 export const DropDownList = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-`
+
+    &:hover {
+        background-color: grey;
+    }
+`;
+
