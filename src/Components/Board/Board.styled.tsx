@@ -29,6 +29,10 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 1rem;
     cursor: pointer;
   }
+
+  form {
+    width: 100%;
+  }
 `;
 
 export const Wrapper = styled.div`

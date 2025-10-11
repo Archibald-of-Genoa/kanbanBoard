@@ -1,10 +1,12 @@
 import { useState } from "react";
 import type { Column as ColumnType, Task } from "../../types";
 import { Arrow } from "../Arrow/Arrow";
-import { Column } from "../Column";
-import { Cross, S as ColumnS } from "../Column/Column.styled";
-import { TaskInputForm } from "../TaskInputForm";
+import { Button } from "../Button";
 import * as ButtonS from "../Button/Button.styled";
+import { Column } from "../Column";
+import { S as ColumnS, Cross } from "../Column/Column.styled";
+import { TaskInputForm } from "../TaskInputForm";
+import { TaskList } from "../TaskList";
 import {
     H2,
     Header,
@@ -12,8 +14,6 @@ import {
     LoginContainer,
     Wrapper,
 } from "./Board.styled";
-import { Button } from "../Button";
-import { DropDown } from "../DropDown";
 
 const S = {
     ...ColumnS,
@@ -23,7 +23,7 @@ const S = {
 const INITIAL_TASKS: Task[] = [
     {
         id: "1",
-        title: "Important task laskfj lsadkfjsld skjfdh ksdfhj ",
+        title: "Important task",
         description: "Description for Important task",
         status: "BACKLOG",
     },
@@ -71,6 +71,7 @@ export function Board() {
     const handleLoginClick = () => {
         setIsOpen((prev) => !prev);
         setIsActive((prev) => !prev);
+        console.log(S);
     };
 
     const handleDropDownToggle = () => {
@@ -133,15 +134,10 @@ export function Board() {
                                     onChange={setCurrentTaskTitle}
                                 />
                             )}
-
+                            
                             {showDropDown === column.id && (
-                                <DropDown
-                                    isOpen={isDropDownOpen}
-                                    onClick={handleDropDownToggle}
-                                    backlogCards={tasks}
-                                />
+                                <TaskList tasks={tasks} />
                             )}
-
                             {(() => {
                                 const isBacklog = column.id === "BACKLOG";
                                 let isReady = column.id === "READY";

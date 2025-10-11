@@ -26,7 +26,8 @@ export const S = {
         flex-direction: column;
         align-items: start;
         justify-content: center;
-        gap: 1rem;
+        gap: 0.5rem;
+        width: 100%;
     `,
 };
 
