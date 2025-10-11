@@ -84,7 +84,8 @@ export function Board() {
     const handleTaskSelect = (selectedTitle: string) => {
         const task = tasks.find((t) => t.title === selectedTitle);
         if (task) {
-            setSelectedTask(task);
+            const updatedTasks = tasks.map(t => t.id === task.id ? {...t, status: "READY"} : t)
+            setTasks(updatedTasks)
             // setShowDropDown(undefined);
         }
     };
@@ -150,7 +151,7 @@ export function Board() {
                             )}
 
                             {showDropDown === column.id && (
-                                <TaskList tasks={tasks} onTaskSelect={handleTaskSelect}/>
+                                <TaskList tasks={tasks.filter(task => task.status === "BACKLOG")} onTaskSelect={handleTaskSelect}/>
                             )}
                             {(() => {
                                 const isBacklog = column.id === "BACKLOG";
