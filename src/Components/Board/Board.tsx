@@ -14,6 +14,7 @@ import {
     LoginContainer,
     Wrapper,
 } from "./Board.styled";
+import { TaskCard } from "../TaskCard";
 
 const S = {
     ...ColumnS,
@@ -65,17 +66,27 @@ export function Board() {
     const [showDropDown, setShowDropDown] = useState<string | undefined>(
         undefined
     );
+    const [selectedTask, setSelectedTask] = useState<Task | undefined>(
+        undefined
+    );
     const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
     const [isClicked, setIsClicked] = useState(false);
 
     const handleLoginClick = () => {
         setIsOpen((prev) => !prev);
         setIsActive((prev) => !prev);
-        console.log(S);
     };
 
     const handleDropDownToggle = () => {
         setIsDropDownOpen((prev) => !prev);
+    };
+
+    const handleTaskSelect = (selectedTitle: string) => {
+        const task = tasks.find((t) => t.title === selectedTitle);
+        if (task) {
+            setSelectedTask(task);
+            // setShowDropDown(undefined);
+        }
     };
 
     const handleTaskSubmit = (columnId: string, title: string) => {
@@ -134,9 +145,12 @@ export function Board() {
                                     onChange={setCurrentTaskTitle}
                                 />
                             )}
-                            
+                            {selectedTask && column.id === "READY" && (
+                                <TaskCard task={selectedTask} />
+                            )}
+
                             {showDropDown === column.id && (
-                                <TaskList tasks={tasks} />
+                                <TaskList tasks={tasks} onTaskSelect={handleTaskSelect}/>
                             )}
                             {(() => {
                                 const isBacklog = column.id === "BACKLOG";

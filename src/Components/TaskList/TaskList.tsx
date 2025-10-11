@@ -4,13 +4,24 @@ import * as S from "./TaskList.styled";
 
 type TaskListType = {
     tasks: Task[];
+    onTaskSelect?: (selectedTitle: string) => void
+
 };
-export function TaskList({ tasks }: TaskListType) {
+export function TaskList({ tasks, onTaskSelect }: TaskListType) {
     const [selectedTask, setSelectedTask] = useState<string | undefined>(undefined)
+
+    const handleTaskChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedTitle = e.target.value
+        setSelectedTask(selectedTitle)
+
+        if (onTaskSelect && selectedTitle) {
+            onTaskSelect(selectedTitle)
+        }
+    }
 
     return (
         <form>
-            <S.TaskListSelect id="tasks" value={selectedTask} onChange={e => {setSelectedTask(e.target.value)}}>
+            <S.TaskListSelect id="tasks" value={selectedTask} onChange={handleTaskChange}>
                 <option value="">Select a task</option>
                 {tasks.map((task) => (
                     <option value={task.title} key={task.id}>
