@@ -66,9 +66,6 @@ export function Board() {
     const [showDropDown, setShowDropDown] = useState<string | undefined>(
         undefined
     );
-    const [selectedTask, setSelectedTask] = useState<Task | undefined>(
-        undefined
-    );
     const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
     const [isClicked, setIsClicked] = useState(false);
 
@@ -77,16 +74,11 @@ export function Board() {
         setIsActive((prev) => !prev);
     };
 
-    const handleDropDownToggle = () => {
-        setIsDropDownOpen((prev) => !prev);
-    };
-
     const handleTaskSelect = (selectedTitle: string) => {
         const task = tasks.find((t) => t.title === selectedTitle);
         if (task) {
             const updatedTasks = tasks.map(t => t.id === task.id ? {...t, status: "READY"} : t)
             setTasks(updatedTasks)
-            // setShowDropDown(undefined);
         }
     };
 
@@ -146,10 +138,6 @@ export function Board() {
                                     onChange={setCurrentTaskTitle}
                                 />
                             )}
-                            {selectedTask && column.id === "READY" && (
-                                <TaskCard task={selectedTask} />
-                            )}
-
                             {showDropDown === column.id && (
                                 <TaskList tasks={tasks.filter(task => task.status === "BACKLOG")} onTaskSelect={handleTaskSelect}/>
                             )}
