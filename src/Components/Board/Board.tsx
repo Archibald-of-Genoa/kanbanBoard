@@ -74,11 +74,19 @@ export function Board() {
         setIsActive((prev) => !prev);
     };
 
-    const handleTaskSelect = (selectedTitle: string) => {
+    const handleTaskSelect = (selectedTitle: string, targetColumn: string) => {
         const task = tasks.find((t) => t.title === selectedTitle);
         if (task) {
-            const updatedTasks = tasks.map(t => t.id === task.id ? {...t, status: "READY"} : t)
-            setTasks(updatedTasks)
+            const allowedSourceColumns = getSourceColumns(targetColumn);
+
+            if (allowedSourceColumns.includes(task.status)) {
+                const updatedTasks = tasks.map((t) =>
+                    t.id === task.id ? { ...t, status: targetColumn } : t
+                );
+                setTasks(updatedTasks);
+            }
+
+            setShowDropDown(undefined);
         }
     };
 
@@ -105,6 +113,32 @@ export function Board() {
     const handleTaskCancel = () => {
         setShowInputForm(undefined);
         setCurrentTaskTitle("");
+    };
+
+    const getSourceColumns = (targetColumn: string): string[] => {
+        switch (targetColumn) {
+            case "READY":
+                return ["BACKLOG"];
+            case "IN_PROGRESS":
+                return ["READY"];
+            case "FINISHED":
+                return ["IN_PROGRESS"];
+            default:
+                return [];
+        }
+    };
+
+    const getTasksForDropdown = (columnId: string): Task[] => {
+        switch (columnId) {
+            case "READY":
+                return tasks.filter((task) => task.status === "BACKLOG");
+            case "IN_PROGRESS":
+                return tasks.filter((task) => task.status === "READY");
+            case "FINISHED":
+                return tasks.filter((task) => task.status === "IN_PROGRESS");
+            default:
+                return [];
+        }
     };
 
     return (
@@ -139,17 +173,33 @@ export function Board() {
                                 />
                             )}
                             {showDropDown === column.id && (
-                                <TaskList tasks={tasks.filter(task => task.status === "BACKLOG")} onTaskSelect={handleTaskSelect}/>
+                                <TaskList
+                                    tasks={getTasksForDropdown(column.id)}
+                                    onTaskSelect={(selectedTitle) =>
+                                        handleTaskSelect(
+                                            selectedTitle,
+                                            column.id
+                                        )
+                                    }
+                                />
                             )}
                             {(() => {
                                 const isBacklog = column.id === "BACKLOG";
-                                let isReady = column.id === "READY";
+                                const isReady = column.id === "READY";
+                                const isInProgress =
+                                    column.id === "IN_PROGRESS";
+                                const isFinished = column.id === "FINISHED";
                                 const isBacklogInput =
                                     showInputForm === column.id && isBacklog;
                                 const hasValidTitle = Boolean(
                                     currentTaskTitle.trim()
                                 );
 
+                                const shouldShowAddButton =
+                                    isBacklog ||
+                                    isReady ||
+                                    isInProgress ||
+                                    isFinished;
                                 return (
                                     <S.Button
                                         $submitted={
@@ -161,35 +211,43 @@ export function Board() {
                                         $isReady={isReady}
                                         $isClicked={isClicked}
                                     >
-                                        <Button
-                                            isDisabled={
-                                                isBacklogInput && !hasValidTitle
-                                            }
-                                            onClick={() => {
-                                                if (
-                                                    showInputForm &&
-                                                    isBacklog
-                                                ) {
-                                                    handleTaskSubmit(
-                                                        column.id,
-                                                        currentTaskTitle
-                                                    );
-                                                } else if (isReady) {
-                                                    setIsClicked(!isClicked);
-                                                    setShowDropDown(column.id);
-                                                } else {
-                                                    addTask(column.id);
-                                                }
-                                            }}
-                                        >
-                                            {showInputForm !== column.id && (
-                                                <Cross />
-                                            )}
+                                        {shouldShowAddButton &&
+                                            showDropDown !== column.id && (
+                                                <Button
+                                                    isDisabled={
+                                                        isBacklogInput &&
+                                                        !hasValidTitle
+                                                    }
+                                                    onClick={() => {
+                                                        if (
+                                                            showInputForm &&
+                                                            isBacklog
+                                                        ) {
+                                                            handleTaskSubmit(
+                                                                column.id,
+                                                                currentTaskTitle
+                                                            );
+                                                        } else if (
+                                                            isReady ||
+                                                            isInProgress ||
+                                                            isFinished
+                                                        ) {
+                                                            setShowDropDown(
+                                                                column.id
+                                                            );
+                                                        } else {
+                                                            addTask(column.id);
+                                                        }
+                                                    }}
+                                                >
+                                                    {showInputForm !==
+                                                        column.id && <Cross />}
 
-                                            {showInputForm === column.id
-                                                ? "Submit"
-                                                : "Add card"}
-                                        </Button>
+                                                    {showInputForm === column.id
+                                                        ? "Submit"
+                                                        : "Add card"}
+                                                </Button>
+                                            )}
                                     </S.Button>
                                 );
                             })()}

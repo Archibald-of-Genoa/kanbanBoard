@@ -4,7 +4,7 @@ import * as S from "./TaskList.styled";
 
 type TaskListType = {
     tasks: Task[];
-    onTaskSelect?: (selectedTitle: string) => void
+    onTaskSelect: (selectedTitle: string) => void
 
 };
 export function TaskList({ tasks, onTaskSelect }: TaskListType) {
@@ -14,7 +14,7 @@ export function TaskList({ tasks, onTaskSelect }: TaskListType) {
         const selectedTitle = e.target.value
         setSelectedTask(selectedTitle)
 
-        if (onTaskSelect && selectedTitle) {
+        if (selectedTitle) {
             onTaskSelect(selectedTitle)
         }
     }
