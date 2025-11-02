@@ -55,6 +55,8 @@ const COLUMNS: ColumnType[] = [
     { id: "FINISHED", title: "Finished" },
 ];
 
+localStorage.setItem('INITIAL_TASKS', JSON.stringify(INITIAL_TASKS))
+
 localStorage.setItem("INITIAL_TASKS", JSON.stringify(INITIAL_TASKS));
 
 export function Board() {
