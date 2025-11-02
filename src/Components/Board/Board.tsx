@@ -55,8 +55,13 @@ const COLUMNS: ColumnType[] = [
     { id: "FINISHED", title: "Finished" },
 ];
 
+localStorage.setItem("INITIAL_TASKS", JSON.stringify(INITIAL_TASKS));
+
 export function Board() {
-    const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
+    const [tasks, setTasks] = useState<Task[]>(() => {
+        const savedTasks = localStorage.getItem("kanban-tasks");
+        return savedTasks ? JSON.parse(savedTasks) : INITIAL_TASKS;
+    });
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isDropDownOpen, setIsDropDownOpen] = useState(false);
     const [isActive, setIsActive] = useState<boolean>(false);
@@ -68,6 +73,10 @@ export function Board() {
     );
     const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
     const [isClicked, setIsClicked] = useState(false);
+
+    const saveTasksToStorage = (updatedTasks: Task[]) => {
+        localStorage.setItem("kanban-tasks", JSON.stringify(updatedTasks));
+    };
 
     const handleLoginClick = () => {
         setIsOpen((prev) => !prev);
@@ -84,6 +93,7 @@ export function Board() {
                     t.id === task.id ? { ...t, status: targetColumn } : t
                 );
                 setTasks(updatedTasks);
+                saveTasksToStorage(updatedTasks);
             }
 
             setShowDropDown(undefined);
@@ -98,7 +108,9 @@ export function Board() {
                 description: "New task description",
                 status: columnId,
             };
-            setTasks((prevTasks) => [...prevTasks, newTask]);
+            const updatedTasks = [...tasks, newTask];
+            setTasks(updatedTasks);
+            saveTasksToStorage(updatedTasks);
         }
         setShowInputForm(undefined);
         setCurrentTaskTitle("");
@@ -213,9 +225,7 @@ export function Board() {
                                         $submitted={
                                             hasValidTitle && isBacklogInput
                                         }
-                                        $isBacklogDisabled={
-                                            isButtonDisabled
-                                        }
+                                        $isBacklogDisabled={isButtonDisabled}
                                         $isReady={isReady}
                                         $isClicked={isClicked}
                                     >
