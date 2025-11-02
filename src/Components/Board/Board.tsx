@@ -194,6 +194,14 @@ export function Board() {
                                 const hasValidTitle = Boolean(
                                     currentTaskTitle.trim()
                                 );
+                                const dropdownTasks = getTasksForDropdown(
+                                    column.id
+                                );
+                                const hasTasksInSource =
+                                    dropdownTasks.length > 0;
+                                const isButtonDisabled =
+                                    (isBacklogInput && !hasValidTitle) ||
+                                    (!isBacklog && !hasTasksInSource);
 
                                 const shouldShowAddButton =
                                     isBacklog ||
@@ -206,7 +214,7 @@ export function Board() {
                                             hasValidTitle && isBacklogInput
                                         }
                                         $isBacklogDisabled={
-                                            isBacklogInput && !hasValidTitle
+                                            isButtonDisabled
                                         }
                                         $isReady={isReady}
                                         $isClicked={isClicked}
@@ -215,8 +223,7 @@ export function Board() {
                                             showDropDown !== column.id && (
                                                 <Button
                                                     isDisabled={
-                                                        isBacklogInput &&
-                                                        !hasValidTitle
+                                                        isButtonDisabled
                                                     }
                                                     onClick={() => {
                                                         if (
