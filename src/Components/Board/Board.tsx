@@ -14,7 +14,6 @@ import {
     LoginContainer,
     Wrapper,
 } from "./Board.styled";
-import { TaskCard } from "../TaskCard";
 
 const S = {
     ...ColumnS,
