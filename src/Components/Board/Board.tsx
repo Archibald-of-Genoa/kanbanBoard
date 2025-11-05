@@ -14,6 +14,7 @@ import {
     LoginContainer,
     Wrapper,
 } from "./Board.styled";
+import { Outlet, useLocation, useNavigate } from "react-router";
 
 const S = {
     ...ColumnS,
@@ -54,7 +55,7 @@ const COLUMNS: ColumnType[] = [
     { id: "FINISHED", title: "Finished" },
 ];
 
-localStorage.setItem('INITIAL_TASKS', JSON.stringify(INITIAL_TASKS))
+localStorage.setItem("INITIAL_TASKS", JSON.stringify(INITIAL_TASKS));
 
 localStorage.setItem("INITIAL_TASKS", JSON.stringify(INITIAL_TASKS));
 
@@ -74,6 +75,11 @@ export function Board() {
     );
     const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
     const [isClicked, setIsClicked] = useState(false);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const isTaskDetailPage = location.pathname !== "/";
 
     const saveTasksToStorage = (updatedTasks: Task[]) => {
         localStorage.setItem("kanban-tasks", JSON.stringify(updatedTasks));
@@ -128,6 +134,10 @@ export function Board() {
         setCurrentTaskTitle("");
     };
 
+    const handleTaskClick = (taskId: string) => {
+        navigate(`/task/${taskId}`);
+    };
+
     const getSourceColumns = (targetColumn: string): string[] => {
         switch (targetColumn) {
             case "READY":
@@ -166,113 +176,126 @@ export function Board() {
                     <Arrow $isOpen={isOpen} fill="white" />
                 </LoginContainer>
             </Header>
-            <S.ColumnsContainer>
-                {COLUMNS.map((column) => {
-                    return (
-                        <Column
-                            key={column.id}
-                            column={column}
-                            tasks={tasks.filter(
-                                (task) => task.status === column.id
-                            )}
-                        >
-                            {showInputForm === column.id && (
-                                <TaskInputForm
-                                    onSubmit={(title) =>
-                                        handleTaskSubmit(column.id, title)
-                                    }
-                                    onCancel={handleTaskCancel}
-                                    onChange={setCurrentTaskTitle}
-                                />
-                            )}
-                            {showDropDown === column.id && (
-                                <TaskList
-                                    tasks={getTasksForDropdown(column.id)}
-                                    onTaskSelect={(selectedTitle) =>
-                                        handleTaskSelect(
-                                            selectedTitle,
-                                            column.id
-                                        )
-                                    }
-                                />
-                            )}
-                            {(() => {
-                                const isBacklog = column.id === "BACKLOG";
-                                const isReady = column.id === "READY";
-                                const isInProgress =
-                                    column.id === "IN_PROGRESS";
-                                const isFinished = column.id === "FINISHED";
-                                const isBacklogInput =
-                                    showInputForm === column.id && isBacklog;
-                                const hasValidTitle = Boolean(
-                                    currentTaskTitle.trim()
-                                );
-                                const dropdownTasks = getTasksForDropdown(
-                                    column.id
-                                );
-                                const hasTasksInSource =
-                                    dropdownTasks.length > 0;
-                                const isButtonDisabled =
-                                    (isBacklogInput && !hasValidTitle) ||
-                                    (!isBacklog && !hasTasksInSource);
-
-                                const shouldShowAddButton =
-                                    isBacklog ||
-                                    isReady ||
-                                    isInProgress ||
-                                    isFinished;
-                                return (
-                                    <S.Button
-                                        $submitted={
-                                            hasValidTitle && isBacklogInput
+            {isTaskDetailPage ? (
+                <Outlet context={{ tasks, onBack: () => navigate("/") }} />
+            ) : (
+                <S.ColumnsContainer>
+                    {COLUMNS.map((column) => {
+                        return (
+                            <Column
+                                key={column.id}
+                                column={column}
+                                tasks={tasks.filter(
+                                    (task) => task.status === column.id
+                                )}
+                                onTaskClick={handleTaskClick}
+                            >
+                                {showInputForm === column.id && (
+                                    <TaskInputForm
+                                        onSubmit={(title) =>
+                                            handleTaskSubmit(column.id, title)
                                         }
-                                        $isBacklogDisabled={isButtonDisabled}
-                                        $isReady={isReady}
-                                        $isClicked={isClicked}
-                                    >
-                                        {shouldShowAddButton &&
-                                            showDropDown !== column.id && (
-                                                <Button
-                                                    isDisabled={
-                                                        isButtonDisabled
-                                                    }
-                                                    onClick={() => {
-                                                        if (
-                                                            showInputForm &&
-                                                            isBacklog
-                                                        ) {
-                                                            handleTaskSubmit(
-                                                                column.id,
-                                                                currentTaskTitle
-                                                            );
-                                                        } else if (
-                                                            isReady ||
-                                                            isInProgress ||
-                                                            isFinished
-                                                        ) {
-                                                            setShowDropDown(
-                                                                column.id
-                                                            );
-                                                        } else {
-                                                            addTask(column.id);
-                                                        }
-                                                    }}
-                                                >
-                                                    {showInputForm !==
-                                                        column.id && <Cross />}
+                                        onCancel={handleTaskCancel}
+                                        onChange={setCurrentTaskTitle}
+                                    />
+                                )}
+                                {showDropDown === column.id && (
+                                    <TaskList
+                                        tasks={getTasksForDropdown(column.id)}
+                                        onTaskSelect={(selectedTitle) =>
+                                            handleTaskSelect(
+                                                selectedTitle,
+                                                column.id
+                                            )
+                                        }
+                                    />
+                                )}
+                                {(() => {
+                                    const isBacklog = column.id === "BACKLOG";
+                                    const isReady = column.id === "READY";
+                                    const isInProgress =
+                                        column.id === "IN_PROGRESS";
+                                    const isFinished = column.id === "FINISHED";
+                                    const isBacklogInput =
+                                        showInputForm === column.id &&
+                                        isBacklog;
+                                    const hasValidTitle = Boolean(
+                                        currentTaskTitle.trim()
+                                    );
+                                    const dropdownTasks = getTasksForDropdown(
+                                        column.id
+                                    );
+                                    const hasTasksInSource =
+                                        dropdownTasks.length > 0;
+                                    const isButtonDisabled =
+                                        (isBacklogInput && !hasValidTitle) ||
+                                        (!isBacklog && !hasTasksInSource);
 
-                                                    {showInputForm === column.id
-                                                        ? "Submit"
-                                                        : "Add card"}
-                                                </Button>
-                                            )}
-                                    </S.Button>
-                                );
-                            })()}
-                        </Column>
-                    );
-                })}
-            </S.ColumnsContainer>
+                                    const shouldShowAddButton =
+                                        isBacklog ||
+                                        isReady ||
+                                        isInProgress ||
+                                        isFinished;
+                                    return (
+                                        <S.Button
+                                            $submitted={
+                                                hasValidTitle && isBacklogInput
+                                            }
+                                            $isBacklogDisabled={
+                                                isButtonDisabled
+                                            }
+                                            $isReady={isReady}
+                                            $isClicked={isClicked}
+                                        >
+                                            {shouldShowAddButton &&
+                                                showDropDown !== column.id && (
+                                                    <Button
+                                                        isDisabled={
+                                                            isButtonDisabled
+                                                        }
+                                                        onClick={() => {
+                                                            if (
+                                                                showInputForm &&
+                                                                isBacklog
+                                                            ) {
+                                                                handleTaskSubmit(
+                                                                    column.id,
+                                                                    currentTaskTitle
+                                                                );
+                                                            } else if (
+                                                                isReady ||
+                                                                isInProgress ||
+                                                                isFinished
+                                                            ) {
+                                                                setShowDropDown(
+                                                                    column.id
+                                                                );
+                                                            } else {
+                                                                addTask(
+                                                                    column.id
+                                                                );
+                                                            }
+                                                        }}
+                                                    >
+                                                        {showInputForm !==
+                                                            column.id && (
+                                                            <Cross />
+                                                        )}
+
+                                                        {showInputForm ===
+                                                        column.id
+                                                            ? "Submit"
+                                                            : "Add card"}
+                                                    </Button>
+                                                )}
+                                        </S.Button>
+                                    );
+                                })()}
+                            </Column>
+                        );
+                    })}
+                </S.ColumnsContainer>
+            )}
         </Wrapper>
     );
 }

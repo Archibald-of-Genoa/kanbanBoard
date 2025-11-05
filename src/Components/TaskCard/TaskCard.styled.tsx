@@ -21,6 +21,7 @@ export const Card = styled.div`
     border-radius: 5px;
     transition: 0.3s ease-in-out;
     animation: ${fadeInDown} 0.4s ease-out;
+    cursor: pointer;
 
     input {
         outline: none;
