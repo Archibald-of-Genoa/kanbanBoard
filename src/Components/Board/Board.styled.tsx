@@ -36,15 +36,19 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
     background-color: #0079bf;
     height: 100lvh;
+    width: 100%;
 `;
 
 export const Header = styled.header`
     padding-left: 1rem;
     padding-right: 1rem;
     width: 100%;
-    height: 3.5rem;
+    min-height: 3.5rem;
     background-color: #0067a3;
     display: flex;
     justify-content: space-between;
@@ -61,7 +65,7 @@ export const H2 = styled.h2`
     font-family: "Roboto";
     font-style: normal;
     font-weight: 400;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     @media (max-width: 375px) {
         display: none;
     }
@@ -85,6 +89,23 @@ export const LoginButton = styled.button`
     height: 2.5rem;
     border: none;
     cursor: pointer;
+`;
+
+export const Footer = styled.footer`
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+    min-height: 3.5rem;
+    background-color: #0067a3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+
+    @media (max-width: 375px) {
+        background-color: #0079bf;
+        justify-content: end;
+    }
 `;
 
 

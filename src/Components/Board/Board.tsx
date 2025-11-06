@@ -8,6 +8,7 @@ import { S as ColumnS, Cross } from "../Column/Column.styled";
 import { TaskInputForm } from "../TaskInputForm";
 import { TaskList } from "../TaskList";
 import {
+    Footer,
     H2,
     Header,
     LoginButton,
@@ -54,8 +55,6 @@ const COLUMNS: ColumnType[] = [
     { id: "IN_PROGRESS", title: "In progress" },
     { id: "FINISHED", title: "Finished" },
 ];
-
-localStorage.setItem("INITIAL_TASKS", JSON.stringify(INITIAL_TASKS));
 
 localStorage.setItem("INITIAL_TASKS", JSON.stringify(INITIAL_TASKS));
 
@@ -296,6 +295,7 @@ export function Board() {
                     })}
                 </S.ColumnsContainer>
             )}
+            <Footer/>
         </Wrapper>
     );
 }

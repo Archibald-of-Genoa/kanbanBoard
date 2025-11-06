@@ -15,3 +15,8 @@ export type ButtonProps = {
     fill?: string;
     onClick?: () => void;
 };
+
+export type BoardContextType = {
+    tasks: Task[];
+    onBack: () => void;
+  };

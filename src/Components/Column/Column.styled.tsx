@@ -4,19 +4,29 @@ export const S = {
     ColumnsContainer: styled.div`
         display: flex;
         justify-content: space-between;
-        gap: 0.5rem;
+        gap: 24px;
+        height: 100%;
+        padding: 1.25rem;
+        width: 100%;
+        overflow-x: auto;
+        @media (max-width: 480px) {
+            flex-direction: column;
+        }
     `,
     Column: styled.div`
         padding: 0.75rem;
-        width: 17.5rem;
         background-color: #ebecf0;
         border-radius: 10px;
-        margin: 1.25rem;
         display: flex;
         flex-direction: column;
         align-items: start;
         height: fit-content;
+        width: 100%;
         gap: 0.5rem;
+
+        @media (max-width: 480px) {
+            max-width: 380px;
+        }
     `,
     ColumnTitle: styled.p`
         margin: 0;
