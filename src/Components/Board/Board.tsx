@@ -111,7 +111,7 @@ export function Board() {
             const newTask = {
                 id: Math.random().toString(36),
                 title: title.trim(),
-                description: "New task description",
+                description: "",
                 status: columnId,
             };
             const updatedTasks = [...tasks, newTask];

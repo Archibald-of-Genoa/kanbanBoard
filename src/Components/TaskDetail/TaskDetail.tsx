@@ -28,8 +28,7 @@ export function TaskDetail() {
                       <S.Exit/>
                     </S.ExitButton>
                 </S.ButtonContainer>
-                <div style={{width: '50%'}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, praesentium repudiandae dolor tempore odit natus eos, mollitia, recusandae sit cumque architecto quibusdam adipisci dignissimos eaque ab soluta quae odio quasi.
-                Numquam enim consequatur, ipsum doloribus id dolore ad dolores error alias ea non? Amet facere magni dolorem fuga repellat, impedit sit! Tempora sunt libero soluta est saepe illo possimus minima.</div>
+                <div style={{width: '50%'}}>{!task.description ? "This task has no description" : task.description}</div>
             </S.Container>
         </S.TaskDetailSection>
     );
