@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
+import { fadeInDown } from "../TaskCard/TaskCard.styled";
 
 export const GlobalStyle = createGlobalStyle`
   *,
@@ -54,8 +55,8 @@ export const Wrapper = styled.div`
 `;
 
 export const Header = styled.header`
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
     width: 100%;
     min-height: 3.5rem;
     background-color: #0067a3;
@@ -84,7 +85,7 @@ export const LoginContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 6px;
+    gap: 0.5rem;
     cursor: pointer;
 `;
 
@@ -100,6 +101,48 @@ export const LoginButton = styled.button`
     cursor: pointer;
 `;
 
+export const TooltipStyled = styled.div`
+    width: 134px;
+    height: 60px;
+    background: white;
+    border-radius: 5px;
+    margin-right: 1.25rem;
+    position: relative;
+    transition: 0.3s ease-in-out;
+    animation: ${fadeInDown} 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 0.5rem;
+    padding: 0.4rem;
+    cursor: pointer;
 
+    &::before {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: white;
+        transform: rotate(45deg);
+        right: 29px;
+        top: -3px;
+      }
+      `;
 
+export const TooltipParagraph = styled.p`
+    margin: 0;
+    
+    &:hover {
+      background-color: #ebecf0;
+      z-index: 1;
+    }
+`;
 
+export const Tooltip = () => {
+    return (
+        <TooltipStyled>
+            <TooltipParagraph>User</TooltipParagraph>
+            <TooltipParagraph>Profile</TooltipParagraph>
+        </TooltipStyled>
+    );
+};

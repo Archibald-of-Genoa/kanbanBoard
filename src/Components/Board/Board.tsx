@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import type { Column as ColumnType, Task } from "../../types";
 import { Arrow } from "../Arrow/Arrow";
 import { Button } from "../Button";
 import * as ButtonS from "../Button/Button.styled";
 import { Column } from "../Column";
 import { S as ColumnS, Cross } from "../Column/Column.styled";
+import { Footer } from "../Footer";
 import { TaskInputForm } from "../TaskInputForm";
 import { TaskList } from "../TaskList";
-import { H2, Header, LoginButton, LoginContainer, Wrapper } from "./Board.styled";
-import { Outlet, useLocation, useNavigate } from "react-router";
-import { Footer } from "../Footer";
+import { H2, Header, LoginButton, LoginContainer, Tooltip, Wrapper } from "./Board.styled";
 
 const S = {
     ...ColumnS,
@@ -173,6 +173,7 @@ export function Board() {
                     <Arrow $isOpen={isOpen} fill="white" />
                 </LoginContainer>
             </Header>
+            <div style={{ display: "flex", justifyContent: "end" }}>{isOpen && <Tooltip />}</div>
             {isTaskDetailPage ? (
                 <Outlet
                     context={{
@@ -263,7 +264,7 @@ export function Board() {
                     })}
                 </S.ColumnsContainer>
             )}
-            <Footer activeTasks={activeTasks} finishedTasks={finishedTasks}/>
+            <Footer activeTasks={activeTasks} finishedTasks={finishedTasks} />
         </Wrapper>
     );
 }
