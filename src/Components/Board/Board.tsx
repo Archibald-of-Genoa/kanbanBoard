@@ -122,6 +122,13 @@ export function Board() {
         setCurrentTaskTitle("");
     };
 
+    const handleUpdateTask = (taskId: string, updates: Partial<Task>) => {
+        const updatedTasks = tasks.map(task => task.id === taskId ? {...task, ...updates} : task)
+        setTasks(updatedTasks)
+        saveTasksToStorage(updatedTasks)
+
+    }
+
     const addTask = (columnId: string) => {
         if (columnId === "BACKLOG") {
             setShowInputForm(columnId);
@@ -176,7 +183,7 @@ export function Board() {
                 </LoginContainer>
             </Header>
             {isTaskDetailPage ? (
-                <Outlet context={{ tasks, onBack: () => navigate("/") }} />
+                <Outlet context={{ tasks, onBack: () => navigate("/"), onUpdateTask: handleUpdateTask }} />
             ) : (
                 <S.ColumnsContainer>
                     {COLUMNS.map((column) => {

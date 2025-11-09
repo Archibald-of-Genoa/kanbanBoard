@@ -19,4 +19,5 @@ export type ButtonProps = {
 export type BoardContextType = {
     tasks: Task[];
     onBack: () => void;
+    onUpdateTask: (taskId: string, updates: Partial<Task>) => void
   };

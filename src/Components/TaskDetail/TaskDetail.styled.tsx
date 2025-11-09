@@ -37,6 +37,13 @@ export const ExitButton = styled.button`
     }
 `;
 
+export const Textarea = styled.textarea`
+    outline: none;
+    border: none;
+    width: 50%;
+    
+`
+
 export function Exit() {
     return (
         <svg

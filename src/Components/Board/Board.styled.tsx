@@ -30,6 +30,15 @@ export const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
 
+  textarea {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    word-wrap: break-word;
+    font-size: 18px;
+    resize: none;
+  }
+
   form {
     width: 100%;
   }
